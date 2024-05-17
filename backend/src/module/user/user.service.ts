@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
+import { UserEditDto } from './dto/user.edit.dto';
 import { UserRetrieveDto } from './dto/user.retrieve.dto';
 import { UserStoreDto } from './dto/user.store.dto';
 import { User } from './entities/user.entity';
@@ -26,10 +27,14 @@ export class UserService {
     return plainToClass(UserRetrieveDto, this.userRepository.get(id), { excludeExtraneousValues: true });
   }
 
-  update(id: number, userDto: UserStoreDto) {
+  update(id: number, userDto: UserEditDto) {
     let user = plainToClass(User, userDto, { excludeExtraneousValues: true });
     
     return this.userRepository.update(id, user);
+  }
+  
+  changeStatus(id: number, changeStatus: boolean) {    
+    return this.userRepository.changeStatus(id, changeStatus);
   }
 
   remove(id: number) {

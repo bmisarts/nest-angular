@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserListService } from 'src/app/shared/services/user-list.service';
 import { HttpResponseService } from 'src/app/_services/http-response.service';
@@ -9,7 +9,7 @@ import { UserService } from 'src/app/_services/user.service';
   templateUrl: './create-modal.component.html',
   styleUrls: ['./create-modal.component.scss']
 })
-export class CreateModalComponent implements OnInit {
+export class CreateModalComponent implements OnInit, OnDestroy {
   
   createForm!: FormGroup;
   submitted = false;
@@ -56,4 +56,7 @@ export class CreateModalComponent implements OnInit {
     }) 
   }
 
+  ngOnDestroy(){
+    this._httpResponseService.response = {status: false, message: ''};
+  }
 }

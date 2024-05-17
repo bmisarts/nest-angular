@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import moment from 'moment';
+import * as moment from 'moment';
 import { DbService } from 'src/config/db/db.service';
 import { User } from '../entities/user.entity';
 
@@ -25,6 +25,14 @@ export class UserRepository {
         DbService.users[userIndex].name = user.name ? user.name : DbService.users[userIndex].name;
         DbService.users[userIndex].email = user.email ? user.email : DbService.users[userIndex].email;
         DbService.users[userIndex].active = ('active' in user) ? user.active : DbService.users[userIndex].active;
+        DbService.users[userIndex].updatedAt = moment().format('yyyy-MM-DD HH:mm');
+    }
+    
+    changeStatus(id: Number, active: boolean): void {
+        //Find index of specific object using findIndex method.    
+        let userIndex = DbService.users.findIndex(user=> user.id == id);
+
+        DbService.users[userIndex].active = active;
         DbService.users[userIndex].updatedAt = moment().format('yyyy-MM-DD HH:mm');
     }
     

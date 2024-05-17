@@ -5,7 +5,7 @@ import { DbService } from 'src/config/db/db.service';
 export class IsUniqueConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [property, table] = args.constraints;
-    const count = DbService[table].filter(item => item[property] === value).length;
+    const count = DbService[table].filter(item => (item[property] === value)).length;
     return count === 0;
   }
 
@@ -15,7 +15,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export function IsUnique(property: string, table: any, validationOptions?: ValidationOptions) {
+export function IsUnique(property: string, table: string, validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
     registerDecorator({
       target: object.constructor,

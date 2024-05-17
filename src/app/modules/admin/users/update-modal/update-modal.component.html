@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="userUpdateModalTitle">Modifier un nouvel utilisateur</h5>
+          <h5 class="modal-title" id="userUpdateModalTitle">Modifier un utilisateur</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form (ngSubmit)="onSubmit()" [formGroup]="updateForm">
@@ -26,11 +26,13 @@
               </div>
             </div>
             <div class="form-floating custom-form-floating custom-form-floating-sm form-group mb-3">
-              <input type="email"
-                     formControlName="email"
-                     class="form-control"
-                     [class.is-invalid]="submitted && updateForm.get('email')?.invalid"
-                     placeholder="Entrez l'adresse Email">
+              <input
+                type="email"
+                formControlName="email"
+                class="form-control"
+                [class.is-invalid]="submitted && updateForm.get('email')?.invalid"
+                placeholder="Entrez l'adresse Email"
+                [disabled]="true">
               <label for="floatingInput">Email</label>
               <div class="invalid text-danger" *ngIf="submitted && updateForm.get('email')?.hasError('required')">
                 L'email est requis

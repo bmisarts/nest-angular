@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
 import { UserService } from './user.service';
 import { UserStoreDto } from './dto/user.store.dto';
 import { JsonResponse } from 'src/helpers/json-response';
+import { UserEditDto } from './dto/user.edit.dto';
 
 @Controller('user')
 export class UserController {
@@ -32,8 +33,15 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() uerDto: UserStoreDto) {
+  update(@Param('id') id: string, @Body() uerDto: UserEditDto) {
     this.userService.update(+id, uerDto);
+    
+    return this.jsonResponse.success('Utilisateur modifié avec succes.')
+  }
+  
+  @Put('change-status/:id')
+  changeStatus(@Param('id') id: string, @Body('active') active: boolean) {
+    this.userService.changeStatus(+id, active);
     
     return this.jsonResponse.success('Utilisateur modifié avec succes.')
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserListService } from 'src/app/shared/services/user-list.service';
 import { UserUpdateService } from 'src/app/shared/services/user-update.service';
@@ -10,7 +10,7 @@ import { UserService } from 'src/app/_services/user.service';
   templateUrl: './update-modal.component.html',
   styleUrls: ['./update-modal.component.scss']
 })
-export class UpdateModalComponent implements OnInit {
+export class UpdateModalComponent implements OnInit, OnDestroy {
   
   updateForm!: FormGroup;
   submitted = false;
@@ -55,6 +55,10 @@ export class UpdateModalComponent implements OnInit {
       console.log(err);
       this._httpResponseService.response = {status: false, message: err.error.message};
     }) 
+  }
+  
+  ngOnDestroy(){
+    this._httpResponseService.response = {status: false, message: ''};
   }
 
 }
