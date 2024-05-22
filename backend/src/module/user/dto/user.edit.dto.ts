@@ -1,13 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString, IsEmail, IsOptional, Validate } from "class-validator";
-import { IsUnique } from "src/helpers/unique-constraint-validator";
+import { PartialType } from '@nestjs/mapped-types';
+import { UserStoreDto } from "./user.store.dto";
 
-export class UserEditDto {
-    
-    @IsString()
-    @IsNotEmpty()
-    public name: string;
-    
-    @IsBoolean()
-    @IsOptional()
-    public active?: boolean;
-}
+export class UserEditDto  extends PartialType(UserStoreDto) {}

@@ -12,43 +12,36 @@ export class UserController {
   ) {}
 
   @Post()
-  create(@Body() uerDto: UserStoreDto) {
-    this.userService.create(uerDto);
+  async create(@Body() userDto: UserStoreDto) {
+    await this.userService.create(userDto);
     
     return this.jsonResponse.success('Utilisateur crée avec succes.')
   }
 
   @Get()
-  findAll() {
-    let users = this.userService.findAll();
+  async findAll() {
+    let users = await this.userService.findAll();
     
     return this.jsonResponse.success('Utilisateur crée avec succes.', users)
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    let user = this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    let user = await this.userService.findOne(+id);
     
     return this.jsonResponse.success('', user)
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() uerDto: UserEditDto) {
-    this.userService.update(+id, uerDto);
-    
-    return this.jsonResponse.success('Utilisateur modifié avec succes.')
-  }
-  
-  @Put('change-status/:id')
-  changeStatus(@Param('id') id: string, @Body('active') active: boolean) {
-    this.userService.changeStatus(+id, active);
+  async update(@Param('id') id: string, @Body() uerDto: UserEditDto) {
+    await this.userService.update(+id, uerDto);
     
     return this.jsonResponse.success('Utilisateur modifié avec succes.')
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    await this.userService.remove(+id);
     return this.jsonResponse.success('Utilisateur supprimé avec succes.',)
   }
 }

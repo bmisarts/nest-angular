@@ -1,43 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { UserEditDto } from './dto/user.edit.dto';
-import { UserRetrieveDto } from './dto/user.retrieve.dto';
 import { UserStoreDto } from './dto/user.store.dto';
-import { User } from './entities/user.entity';
-import { UserRepository } from './repository/user.repository'; 
+import { IUser } from './schema/user.schema';
 
 @Injectable()
 export class UserService {
 
-  constructor(private userRepository: UserRepository) {}
+  constructor(@InjectModel('User') private userModel:Model<IUser>) { }
   
-  create(userDto: UserStoreDto) {
-    let user = plainToClass(User, userDto, { excludeExtraneousValues: true });
-    return this.userRepository.add(user);
+  async create(userDto: UserStoreDto): Promise<IUser> {
+    const newUser = await new this.userModel(userDto);
+    return newUser.save();
   }
 
-  findAll(): UserRetrieveDto[] {
-    let users = this.userRepository.all()
-      .map(user => plainToClass(UserRetrieveDto, user), { excludeExtraneousValues: true });
-      
-    return users;
+  async findAll(): Promise<IUser[]> {
+    const userData = await this.userModel.find();
+    if (!userData || userData.length == 0) {
+        throw new NotFoundException('Users data not found!');
+    }
+    return userData;
   }
 
-  findOne(id: number): UserRetrieveDto {
-    return plainToClass(UserRetrieveDto, this.userRepository.get(id), { excludeExtraneousValues: true });
+  async findOne(id: number): Promise<IUser> {
+   const existingUser = await this.userModel.findById(id).exec();
+   if (!existingUser) {
+    throw new NotFoundException(`User #${id} not found`);
+   }
+   return existingUser;
   }
 
-  update(id: number, userDto: UserEditDto) {
-    let user = plainToClass(User, userDto, { excludeExtraneousValues: true });
-    
-    return this.userRepository.update(id, user);
-  }
-  
-  changeStatus(id: number, changeStatus: boolean) {    
-    return this.userRepository.changeStatus(id, changeStatus);
+  async update(id: number, userDto: UserEditDto): Promise<IUser> {
+    const existingUser = await this.userModel.findByIdAndUpdate(id, userDto, { new: true });
+   if (!existingUser) {
+     throw new NotFoundException(`User #${id} not found`);
+   }
+   return existingUser;
   }
 
-  remove(id: number) {
-    return this.userRepository.remove(id);
+  async remove(id: number) : Promise<IUser> {
+    const deletedUser = await this.userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      throw new NotFoundException(`User #${id} not found`);
+    }
+    return deletedUser;
   }
 }
