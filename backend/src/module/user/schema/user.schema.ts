@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-import { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IUser extends Document {
     readonly name: string;
@@ -10,9 +9,8 @@ export interface IUser extends Document {
 }
 
 export const UserSchema = new Schema({
+  _id: { type: Schema.ObjectId, auto: true },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   active: { type: Boolean, required: true },
-  createdAt:  { type: String, default: moment().format('YYYY-MM-DD HH:mm') },
-  updatedAt:  { type: String, default: moment().format('YYYY-MM-DD HH:mm') }
-});
+}, { timestamps: true });

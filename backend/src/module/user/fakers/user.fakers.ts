@@ -1,6 +1,4 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { plainToClass } from "class-transformer";
-import { User } from "../entities/user.entity";
 
 @Injectable()
 export class UserFakers implements OnModuleInit  {

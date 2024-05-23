@@ -1,5 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsString, IsEmail, IsOptional, Validate } from "class-validator";
-import { IsUnique } from "src/helpers/unique-constraint-validator";
+import { UniqueValidator } from "src/helpers/unique-validator";
 
 export class UserStoreDto {
     
@@ -9,8 +9,8 @@ export class UserStoreDto {
     
     @IsEmail()
     @IsNotEmpty()
-    @IsUnique('email', 'users', {
-      message: 'Email must be unique',
+    @Validate(UniqueValidator, ['email'], {
+      message: 'Email already exists',
     })
     public email: string;
     

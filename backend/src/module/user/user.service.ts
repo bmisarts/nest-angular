@@ -32,7 +32,7 @@ export class UserService {
   }
 
   async update(id: number, userDto: UserEditDto): Promise<IUser> {
-    const existingUser = await this.userModel.findByIdAndUpdate(id, userDto, { new: true });
+    const existingUser = await this.userModel.findByIdAndUpdate(id, userDto, { new: true, timestamps: true });
    if (!existingUser) {
      throw new NotFoundException(`User #${id} not found`);
    }

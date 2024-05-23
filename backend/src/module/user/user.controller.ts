@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserStoreDto } from './dto/user.store.dto';
 import { JsonResponse } from 'src/helpers/json-response';
 import { UserEditDto } from './dto/user.edit.dto';
+import { validate } from 'class-validator';
 
 @Controller('user')
 export class UserController {
